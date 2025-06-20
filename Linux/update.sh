@@ -7,48 +7,15 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Debian/Ubuntu
-update_debian() {
     echo "Detected Debian/Ubuntu-based system"
     apt update
     apt upgrade -y
     apt dist-upgrade -y
     apt autoremove -y
     apt autoclean
-}
 
-# fedora
-update_fedora() {
-    echo "Detected Fedora-based system"
-    dnf upgrade --refresh -y
-    dnf autoremove -y
-}
 
-# yum
-update_yum() {
-    echo "Detected yum-based system"
-    yum update -y
-    yum autoremove -y
-}
 
-# zypper
-update_zypper() {
-    echo "Detected openSUSE-based system"
-    zypper refresh
-    zypper update -y
-}
-
-# Check for package manager and run appropriate update function
-if command -v apt >/dev/null 2>&1; then
-    update_debian
-elif command -v dnf >/dev/null 2>&1; then
-    update_fedora
-elif command -v yum >/dev/null 2>&1; then
-    update_yum
-elif command -v zypper >/dev/null 2>&1; then
-    update_zypper
-else
-    echo "No supported package manager found (apt, dnf, yum, or zypper)"
-    exit 1
 fi
 
 # snap
