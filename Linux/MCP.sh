@@ -11,7 +11,7 @@ sudo apt install dbus-x11
 gnome-terminal -- bash -c "sudo ufw enable"
 #navigates to the correct directory, downloads/linux.
 cd ~
-cd Downloads/Linux
+cd Downloads/Cyberpatriot-scripts-main/Linux
 read -p "Do you want to run update.sh? (y/n): " yn
 
 case $yn in
