@@ -15,8 +15,15 @@ cd Downloads/Linux
 read -p "Do you want to run update.sh? (y/n): " yn
 
 case $yn in
-    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "./update.sh" || echo "Failed to run update.sh. You are likely not in the correct directory." >&2; exit 1;;
-    [Nn]* ) echo "Exiting..."; exit;;
+    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./update.sh" || echo "Failed to run update.sh. You are likely not in the correct directory." >&2;;
+    [Nn]* ) echo "Exiting...";;
     * ) echo "Invalid response. Please answer y or n.";;
 esac
 
+read -p "Do you want to change all passwords? (y/n): " yn
+
+case $yn in
+    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./change_passwords.sh" || echo "Failed to run ./change_passwords.sh You are likely not in the correct directory." >&2;;
+    [Nn]* ) echo "Exiting...";;
+    * ) echo "Invalid response. Please answer y or n.";;
+esac
