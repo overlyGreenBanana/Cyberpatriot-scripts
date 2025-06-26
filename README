@@ -2,3 +2,4 @@ Scripts for increased productivity during competitions
 change_passwords: changes all accounts. root and your account become "112358UtherPendragon"
 feel free to change that in favor of a more memorable password (just write it here ^ pls)
 you must first use: "sudo chmod +x ./MCP.sh" before running the program.
+user_recifier is a WORK IN PROGRESS -- DO NOT RUN IF YOU WANT YOUR COMPUTER TO WORK
