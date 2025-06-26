@@ -14,6 +14,7 @@ cd ~
 cd Downloads/Cyberpatriot-scripts-main/Linux
 sudo chmod +x ./update.sh
 sudo chmod +x ./change_passwords.sh
+sudo chmod +x ./user_rectifier.sh
 read -p "Do you want to run update.sh? (y/n): " yn
 
 case $yn in
@@ -29,4 +30,14 @@ case $yn in
     [Nn]* ) echo "Exiting...";;
     * ) echo "Invalid response. Please answer y or n.";;
 esac
+
+read -p "Do you want to rectify users? (y/n): " yn
+
+
+case $yn in
+    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./user_rectifier.sh" || echo "Failed to run ./user_rectifier.sh You are likely not in the correct directory." >&2;;
+    [Nn]* ) echo "Exiting...";;
+    * ) echo "Invalid response. Please answer y or n.";;
+esac
+
 sudo apt remove dbus-x11
