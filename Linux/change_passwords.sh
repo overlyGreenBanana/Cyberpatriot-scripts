@@ -11,8 +11,6 @@ CURRENT_USER=$(logname 2>/dev/null || echo "$SUDO_USER")
 
 # Log file for new passwords (restricted permissions)
 LOGFILE="/root/user_passwords_$(date +%F_%H-%M-%S).log"
-touch "$LOGFILE"
-chmod 600 "$LOGFILE"
 
 # Function to generate a secure random password
 generate_password() {
@@ -26,7 +24,6 @@ FIXED_PASSWORD="112358UtherPendragon"
 # Change password for root
 if echo "root:$FIXED_PASSWORD" | chpasswd; then
     echo "Changed password for root"
-    echo "root:$FIXED_PASSWORD" >> "$LOGFILE"
 else
     echo "Failed to change password for root" >&2
 fi
@@ -35,7 +32,6 @@ fi
 if [[ "$CURRENT_USER" != "root" && -n "$CURRENT_USER" ]]; then
     if echo "$CURRENT_USER:$FIXED_PASSWORD" | chpasswd; then
         echo "Changed password for $CURRENT_USER"
-        echo "$CURRENT_USER:$FIXED_PASSWORD" >> "$LOGFILE"
     else
         echo "Failed to change password for $CURRENT_USER" >&2
     fi
@@ -57,7 +53,6 @@ for user in $USERS; do
             NEW_PASSWORD=$(generate_password)
             if echo "$user:$NEW_PASSWORD" | chpasswd; then
                 echo "Changed password for $user"
-                echo "$user:$NEW_PASSWORD" >> "$LOGFILE"
                 ((changed++))
             else
                 echo "Failed to change password for $user" >&2
@@ -68,4 +63,3 @@ done
 
 # Summary
 echo "Password change completed. Changed $changed user passwords (plus root and current user)."
-echo "New passwords are stored in $LOGFILE"

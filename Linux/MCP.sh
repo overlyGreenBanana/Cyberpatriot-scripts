@@ -1,43 +1,39 @@
 #!/bin/bash
 
-# Check if script is run as root
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" >&2
-   exit 1
+# Elevate to root once at the beginning
+if [ "$(id -u)" -ne 0 ]; then
+    sudo -v # Cache credentials
+    exec sudo "$0" "$@" # Re-run as root
+    exit 1
 fi
-#allows for opening of new shells
-sudo apt install dbus-x11
-#enable firewall in another window so this script keeps running
-gnome-terminal -- bash -c "sudo ufw enable"
-#navigates to the correct directory, downloads/linux.
-cd ~
-cd Downloads/Cyberpatriot-scripts-main/Linux
-sudo chmod +x ./update.sh
-sudo chmod +x ./change_passwords.sh
-sudo chmod +x ./user_rectifier.sh
-read -p "Do you want to run update.sh? (y/n): " yn
 
-case $yn in
-    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./update.sh" || echo "Failed to run update.sh. You are likely not in the correct directory." >&2;;
-    [Nn]* ) echo "Exiting...";;
-    * ) echo "Invalid response. Please answer y or n.";;
-esac
+# Now running as root - no more sudo needed
+SCRIPT_DIR="/home/$SUDO_USER/Downloads/Cyberpatriot-scripts-main/Linux"
 
-read -p "Do you want to change all passwords? (y/n): " yn
+# Make scripts executable
+chmod +x "$SCRIPT_DIR/"*.sh
 
-case $yn in
-    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./change_passwords.sh" || echo "Failed to run ./change_passwords.sh You are likely not in the correct directory." >&2;;
-    [Nn]* ) echo "Exiting...";;
-    * ) echo "Invalid response. Please answer y or n.";;
-esac
+# Install dbus-x11 (for opening new terminals)
+apt install -y dbus-x11
 
-read -p "Do you want to rectify users? (y/n): " yn
+# Enable firewall
+ufw enable >/dev/null 2>&1
 
+# Function to run commands in new terminal
+run_as_user() {
+    local cmd="cd '$SCRIPT_DIR' && ./$1"
+    gnome-terminal -- bash -c "su $SUDO_USER -c '$cmd'; exec bash"
+}
 
-case $yn in
-    [Yy]* ) echo "Proceeding..."; gnome-terminal -- bash -c "sudo ./user_rectifier.sh" || echo "Failed to run ./user_rectifier.sh You are likely not in the correct directory." >&2;;
-    [Nn]* ) echo "Exiting...";;
-    * ) echo "Invalid response. Please answer y or n.";;
-esac
+# Prompts
+read -p "Run update.sh? (y/n): " yn
+[[ $yn =~ [Yy] ]] && run_as_user "update.sh"
 
-sudo apt remove dbus-x11
+read -p "Change all passwords? (y/n): " yn
+[[ $yn =~ [Yy] ]] && run_as_user "change_passwords.sh"
+
+read -p "Rectify users? (y/n): " yn
+[[ $yn =~ [Yy] ]] && run_as_user "user_rectifier.sh"
+
+# Clean up
+apt remove -y dbus-x11
