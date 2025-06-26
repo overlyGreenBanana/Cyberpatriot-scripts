@@ -1,4 +1,4 @@
 Scripts for increased productivity during competitions
 change_passwords: changes all accounts. root and your account become "112358UtherPendragon"
 feel free to change that in favor of a more memorable password
-this does not currently run as I am encountering some debugging problems. please bear with me :)
+you must first use: "sudo chmod +x ./MCP.sh" before running the program.
