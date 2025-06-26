@@ -48,9 +48,9 @@ USERS=$(awk -F: '$7 !~ /nologin|false/ {print $1}' /etc/passwd)
 changed=0
 
 # Loop through each user to change their password, excluding root and current user
-for user in $USERS"; do
+for user in $USERS; do
     # Skip root and current user
-    if [[ "$user" != "$CURRENT_USER" && "$user != "root" ]]; then
+    if [[ "$user" != "$CURRENT_USER" && "$user" != "root" ]]; then
         # Skip system users (UID < 1000)
         uid=$(id -u "$user")
         if [[ $uid -ge 1000 ]]; then
