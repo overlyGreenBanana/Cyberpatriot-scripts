@@ -27,3 +27,4 @@ case $yn in
     [Nn]* ) echo "Exiting...";;
     * ) echo "Invalid response. Please answer y or n.";;
 esac
+sudo apt remove dbus-x11
