@@ -12,6 +12,8 @@ gnome-terminal -- bash -c "sudo ufw enable"
 #navigates to the correct directory, downloads/linux.
 cd ~
 cd Downloads/Cyberpatriot-scripts-main/Linux
+sudo chmod +x ./update.sh
+sudo chmod +x ./change_passwords.sh
 read -p "Do you want to run update.sh? (y/n): " yn
 
 case $yn in
