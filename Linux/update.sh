@@ -16,7 +16,7 @@ fi
 
 
 
-fi
+
 
 # snap
 if command -v snap >/dev/null 2>&1; then
